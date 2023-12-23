@@ -21,9 +21,11 @@ type HTTPServer struct {
 }
 
 type Database struct {
-	DatabaseURL        string `envconfig:"DATABASE_URL" required:"true"`
-	LogLevel           string `envconfig:"DATABASE_LOG_LEVEL" default:"warn"`
-	MaxOpenConnections int    `envconfig:"DATABASE_MAX_OPEN_CONNECTIONS" default:"10"`
+	DatabaseURL           string `envconfig:"DATABASE_URL" required:"true"`
+	LogLevel              string `envconfig:"DATABASE_LOG_LEVEL" default:"warn"`
+	MaxOpenConnections    int    `envconfig:"DATABASE_MAX_OPEN_CONNECTIONS" default:"10"`
+	MaxIdleConnections    int    `envconfig:"DATABASE_MAX_IDLE_CONNECTIONS" default:"10"`
+	MaxConnectionLifeTime time.Duration    `envconfig:"DATABASE_MAX_CONNECTION_LIFETIME" default:"3min"`
 }
 
 func Load() (Configuration, error) {

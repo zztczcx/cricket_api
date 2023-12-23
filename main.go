@@ -15,6 +15,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	server := api.NewServer(cfg.HTTPServer)
+	server := api.NewServer(cfg)
 	server.Start(ctx)
 }

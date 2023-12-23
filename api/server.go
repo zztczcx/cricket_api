@@ -10,19 +10,27 @@ import (
 	"syscall"
 
 	"cricket/config"
+	db "cricket/db/sqlc"
 
 	"github.com/go-chi/chi/v5"
 )
 
 type Server struct {
 	cfg    config.HTTPServer
+	store  db.Store
 	router *chi.Mux
 }
 
-func NewServer(cfg config.HTTPServer) *Server {
+func NewServer(cfg config.Configuration) *Server {
+	connPool, err := db.NewDatabase(cfg.Database)
+	if err != nil {
+		panic(err)
+	}
+
 	srv := &Server{
-		cfg:    cfg,
+		cfg:    cfg.HTTPServer,
 		router: chi.NewRouter(),
+		store:  db.NewStore(connPool),
 	}
 
 	srv.routes()
