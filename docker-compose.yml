@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  movies.db:
-    image: mysql:5.7
+  cricket.db:
+    image: mysql:8.2.0
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=cricket_db

@@ -46,19 +46,19 @@ INSERT INTO players (
 
 type CreatePlayerParams struct {
 	Name            string          `json:"name"`
-	CareerStartYear sql.NullInt32   `json:"career_start_year"`
-	CareerEndYear   sql.NullInt32   `json:"career_end_year"`
-	Matches         sql.NullInt32   `json:"matches"`
-	Inns            sql.NullInt32   `json:"inns"`
-	NotOuts         sql.NullInt32   `json:"not_outs"`
-	Runs            sql.NullInt32   `json:"runs"`
-	HighestScores   sql.NullInt32   `json:"highest_scores"`
+	CareerStartYear sql.NullInt64   `json:"career_start_year"`
+	CareerEndYear   sql.NullInt64   `json:"career_end_year"`
+	Matches         sql.NullInt64   `json:"matches"`
+	Inns            sql.NullInt64   `json:"inns"`
+	NotOuts         sql.NullInt64   `json:"not_outs"`
+	Runs            sql.NullInt64   `json:"runs"`
+	HighestScores   sql.NullInt64   `json:"highest_scores"`
 	Average         sql.NullFloat64 `json:"average"`
-	FacedBalls      sql.NullInt32   `json:"faced_balls"`
+	FacedBalls      sql.NullInt64   `json:"faced_balls"`
 	StrikeRate      sql.NullFloat64 `json:"strike_rate"`
-	ScoreHundreds   sql.NullInt32   `json:"score_hundreds"`
-	ScoreFiftys     sql.NullInt32   `json:"score_fiftys"`
-	ScoreZeros      sql.NullInt32   `json:"score_zeros"`
+	ScoreHundreds   sql.NullInt64   `json:"score_hundreds"`
+	ScoreFiftys     sql.NullInt64   `json:"score_fiftys"`
+	ScoreZeros      sql.NullInt64   `json:"score_zeros"`
 }
 
 func (q *Queries) CreatePlayer(ctx context.Context, arg CreatePlayerParams) (sql.Result, error) {
@@ -86,8 +86,8 @@ WHERE career_start_year <= ? AND career_end_year >= ?
 `
 
 type GetPlayersByCareerYearParams struct {
-	CareerStartYear sql.NullInt32 `json:"career_start_year"`
-	CareerEndYear   sql.NullInt32 `json:"career_end_year"`
+	CareerStartYear sql.NullInt64 `json:"career_start_year"`
+	CareerEndYear   sql.NullInt64 `json:"career_end_year"`
 }
 
 func (q *Queries) GetPlayersByCareerYear(ctx context.Context, arg GetPlayersByCareerYearParams) ([]Player, error) {
@@ -167,7 +167,7 @@ WHERE career_end_year = ?
 ORDER BY runs DESC LIMIT 1
 `
 
-func (q *Queries) GetPlayersOfMostRunsByCareerEndYear(ctx context.Context, careerEndYear sql.NullInt32) (Player, error) {
+func (q *Queries) GetPlayersOfMostRunsByCareerEndYear(ctx context.Context, careerEndYear sql.NullInt64) (Player, error) {
 	row := q.db.QueryRowContext(ctx, getPlayersOfMostRunsByCareerEndYear, careerEndYear)
 	var i Player
 	err := row.Scan(

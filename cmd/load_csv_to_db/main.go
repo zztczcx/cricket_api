@@ -1,10 +1,25 @@
 package main
 
 import (
-        "cricket/config"
-        db "cricket/db/sqlc"
+        "flag"
+        "fmt"
+        "cricket/cmd/load_csv_to_db/batting"
 )
 
 func main(){
-        cfg := config.New()
+        i := flag.String("input", "./db/seeds/ODI_data.csv", "Source file")
+	flag.Parse()
+
+	if *i == "" {
+		panic("Missing data file")
+	}
+
+        loader := batting.NewLoader(i)
+        err := loader.Load()
+
+        if err != nil {
+                fmt.Printf("Error: %v\n", err)
+        } else {
+                fmt.Println("Data imported successfully")
+        }
 }

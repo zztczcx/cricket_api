@@ -25,7 +25,7 @@ type Database struct {
 	LogLevel              string `envconfig:"DATABASE_LOG_LEVEL" default:"warn"`
 	MaxOpenConnections    int    `envconfig:"DATABASE_MAX_OPEN_CONNECTIONS" default:"10"`
 	MaxIdleConnections    int    `envconfig:"DATABASE_MAX_IDLE_CONNECTIONS" default:"10"`
-	MaxConnectionLifeTime time.Duration    `envconfig:"DATABASE_MAX_CONNECTION_LIFETIME" default:"3min"`
+	MaxConnectionLifeTime time.Duration    `envconfig:"DATABASE_MAX_CONNECTION_LIFETIME" default:"3m"`
 }
 
 func Load() (Configuration, error) {

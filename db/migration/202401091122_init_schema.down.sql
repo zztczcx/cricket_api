@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS players;
+DELTE DATABASE cricket_db;
