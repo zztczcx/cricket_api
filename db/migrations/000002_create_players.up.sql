@@ -1,5 +1,5 @@
 -- Build Initial Table Schemas
-CREATE TABLE players (
+CREATE TABLE IF NOT EXISTS players (
     id     BIGINT AUTO_INCREMENT NOT NULL,
     name VARCHAR(2500) NOT NULL,
     career_start_year BIGINT,
