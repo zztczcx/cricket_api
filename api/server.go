@@ -53,6 +53,7 @@ func (s *Server) Start(ctx context.Context) {
 		}
 	})
 
+        log.Printf("Listen on %s\n", server.Addr)
 	if err := server.ListenAndServe(); err == http.ErrServerClosed {
 		<-shutdownComplete
 	} else {
