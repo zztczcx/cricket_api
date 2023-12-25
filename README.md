@@ -11,7 +11,8 @@
 
 ### Prerequisite
 
-There are a lot of config that can be set, please check `./config`
+There are a lot of config that can be set, please check `./config`.
+
 the most necessary one could be 
 
 ```bash
@@ -22,6 +23,7 @@ export DATABASE_URL="root:password@/cricket_db?parseTime=true"
 > [!WARNING]
 > the user:password is only used for development
 
+### Start the services
 
 ```bash
 docker compose up
@@ -29,7 +31,7 @@ docker compose up
 
 it will start a mysql server and do migrations, but at this point, the tables are still empty
 
-you can run to seed to table
+you can run the following command to seed to table
 
 ```bash
 go run cmd/load_csv_to_db/main.go
