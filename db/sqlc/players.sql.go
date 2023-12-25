@@ -86,12 +86,11 @@ WHERE career_start_year <= ? AND career_end_year >= ?
 `
 
 type GetPlayersByCareerYearParams struct {
-	CareerStartYear sql.NullInt64 `json:"career_start_year"`
-	CareerEndYear   sql.NullInt64 `json:"career_end_year"`
+	CareerYear sql.NullInt64 `json:"career_year"`
 }
 
 func (q *Queries) GetPlayersByCareerYear(ctx context.Context, arg GetPlayersByCareerYearParams) ([]Player, error) {
-	rows, err := q.db.QueryContext(ctx, getPlayersByCareerYear, arg.CareerStartYear, arg.CareerEndYear)
+	rows, err := q.db.QueryContext(ctx, getPlayersByCareerYear, arg.CareerYear, arg.CareerYear)
 	if err != nil {
 		return nil, err
 	}

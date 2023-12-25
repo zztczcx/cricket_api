@@ -9,7 +9,7 @@ ORDER BY runs DESC LIMIT 1;
 
 -- name: GetPlayersByCareerYear :many
 SELECT * FROM players
-WHERE career_start_year <= ? AND career_end_year >= ?;
+WHERE career_start_year <= sqlc.arg(career_year) AND career_end_year >= sqlc.arg(career_year);
 
 -- name: CreatePlayer :execresult
 INSERT INTO players (

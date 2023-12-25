@@ -4,6 +4,7 @@ services:
   cricket.api:
     build:
       context: .
+      target: Dev
     image: cricket.api
     working_dir: /app
     volumes:
@@ -12,7 +13,7 @@ services:
       - cricket.db
       - cricket.db.migrations
     environment:
-      - DATABASE_URL=mysql://root:password@tcp(cricket.db:3306)/cricket_db
+      - DATABASE_URL=root:password@tcp(cricket.db:3306)/cricket_db?parseTime=true
     ports:
       - 8080:8080
     restart: unless-stopped
@@ -20,7 +21,7 @@ services:
   cricket.db:
     image: mysql:8.2.0
     environment:
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password #for testing only, please use environment variable in production
       - MYSQL_DATABASE=cricket_db
     volumes:
       - mysql:/var/lib/mysql
