@@ -18,6 +18,7 @@ type HTTPServer struct {
 	Port         int           `envconfig:"PORT" default:"8080"`
 	ReadTimeout  time.Duration `envconfig:"HTTP_SERVER_READ_TIMEOUT" default:"1s"`
 	WriteTimeout time.Duration `envconfig:"HTTP_SERVER_WRITE_TIMEOUT" default:"2s"`
+        JwtSecret    string        `envconfig:"JWT_SECRET" default:"secret"`
 }
 
 type Database struct {

@@ -39,3 +39,26 @@ go run cmd/load_csv_to_db/main.go
 
 
 ## Api document
+
+## API Authentication
+
+using 'Authorization: BEARER T' request header, Token can generate by using the following tool.
+
+Secret can be configured through env varaible `JWT_SECRET`, by default its value is `secret`
+
+### Util
+See https://github.com/goware/jwtutil for utility to help you generate JWT tokens.
+
+go install github.com/goware/jwtutil
+
+Usage: jwtutil -secret=secret -encode -claims='{"user_id":111}'
+
+Output: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMTF9._cLJn0xFS0Mdr_4L_8XF8-8tv7bHyOQJXyWaNsSqlEs
+
+### Example
+
+```
+curl http://localhost:8080/api/v1/players/most_runs\?careerEndYear\=2010 -H 'Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMTF9._cLJn0xFS0Mdr_4L_8XF8-8tv7bHyOQJXyWaNsSqlEs'
+
+{"name":"Mohammad Yousuf (Asia/PAK)","runs":9720}
+```
