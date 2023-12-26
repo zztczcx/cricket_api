@@ -1,0 +1,42 @@
+openapi: 3.0.0
+info: 
+  title: Cricket API
+  description: API for retrieving information about cricket players
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080 
+    description: local server
+
+paths:
+  /api/v1/players/active:
+    get:
+      summary: Get active players by Career year
+      description: Returns a list of player names by Career year
+      parameters:
+        - name: careerYear
+          in: query
+          schema:
+            type: integer
+          required: true
+          description: year that the player is still in career
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivePlayers'
+
+
+components:
+  schemas:
+    ActivePlayers:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: array
+          items:
+            type: string
