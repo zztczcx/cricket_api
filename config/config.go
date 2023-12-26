@@ -18,15 +18,15 @@ type HTTPServer struct {
 	Port         int           `envconfig:"PORT" default:"8080"`
 	ReadTimeout  time.Duration `envconfig:"HTTP_SERVER_READ_TIMEOUT" default:"1s"`
 	WriteTimeout time.Duration `envconfig:"HTTP_SERVER_WRITE_TIMEOUT" default:"2s"`
-        JwtSecret    string        `envconfig:"JWT_SECRET" default:"secret"`
+	JwtSecret    string        `envconfig:"JWT_SECRET" default:"secret"`
 }
 
 type Database struct {
-	DatabaseURL           string `envconfig:"DATABASE_URL" required:"true"`
-	LogLevel              string `envconfig:"DATABASE_LOG_LEVEL" default:"warn"`
-	MaxOpenConnections    int    `envconfig:"DATABASE_MAX_OPEN_CONNECTIONS" default:"10"`
-	MaxIdleConnections    int    `envconfig:"DATABASE_MAX_IDLE_CONNECTIONS" default:"10"`
-	MaxConnectionLifeTime time.Duration    `envconfig:"DATABASE_MAX_CONNECTION_LIFETIME" default:"3m"`
+	DatabaseURL           string        `envconfig:"DATABASE_URL" required:"true"`
+	LogLevel              string        `envconfig:"DATABASE_LOG_LEVEL" default:"warn"`
+	MaxOpenConnections    int           `envconfig:"DATABASE_MAX_OPEN_CONNECTIONS" default:"10"`
+	MaxIdleConnections    int           `envconfig:"DATABASE_MAX_IDLE_CONNECTIONS" default:"10"`
+	MaxConnectionLifeTime time.Duration `envconfig:"DATABASE_MAX_CONNECTION_LIFETIME" default:"3m"`
 }
 
 func Load() (Configuration, error) {

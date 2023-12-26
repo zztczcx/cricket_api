@@ -16,7 +16,7 @@ const (
 
 type player db.CreatePlayerParams
 
-func (l *loader)startParser(dataSource <-chan string, done chan<- struct{}) {
+func (l *loader) startParser(dataSource <-chan string, done chan<- struct{}) {
 	var wg sync.WaitGroup
 	wg.Add(parserCount)
 
@@ -28,7 +28,7 @@ func (l *loader)startParser(dataSource <-chan string, done chan<- struct{}) {
 
 	go func() {
 		wg.Wait()
-                done <- struct{}{}
+		done <- struct{}{}
 	}()
 }
 

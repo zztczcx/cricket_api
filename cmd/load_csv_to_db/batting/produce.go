@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func (l *loader)produce() <-chan string {
+func (l *loader) produce() <-chan string {
 	dataSource := make(chan string)
 
 	go func() {
@@ -17,7 +17,7 @@ func (l *loader)produce() <-chan string {
 		defer f.Close()
 
 		scanner := bufio.NewScanner(f)
-                scanner.Scan() // skip header
+		scanner.Scan() // skip header
 
 		for scanner.Scan() {
 			dataSource <- scanner.Text()

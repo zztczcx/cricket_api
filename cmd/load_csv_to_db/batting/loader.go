@@ -11,11 +11,11 @@ type Loader interface {
 
 type loader struct {
 	dataFile *string
-	store  db.Store
+	store    db.Store
 }
 
 func NewLoader(i *string) Loader {
-        cfg, err := config.Load()
+	cfg, err := config.Load()
 	if err != nil {
 		panic(err)
 	}
@@ -27,15 +27,15 @@ func NewLoader(i *string) Loader {
 
 	return &loader{
 		dataFile: i,
-		store:  db.NewStore(connPool),
+		store:    db.NewStore(connPool),
 	}
 }
 
 func (l *loader) Load() error {
 	dataSource := l.produce()
-        done := make(chan struct{})
+	done := make(chan struct{})
 	l.startParser(dataSource, done)
 
-        <-done
-        return nil
+	<-done
+	return nil
 }
