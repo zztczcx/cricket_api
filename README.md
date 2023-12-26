@@ -40,7 +40,11 @@ go run cmd/load_csv_to_db/main.go
 
 ## API documentation
 
-[**Openapi-generator generated documentation**](./docs/markdown/Apis/DefaultApi.md/)
+[**Openapi-generator generated documentation**](./docs/markdown/Apis/DefaultApi.md/) 
+
+or
+
+access `http://localhost:8080/docs/`
 
 ## API Authentication
 
