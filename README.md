@@ -31,10 +31,14 @@ docker compose up
 
 it will start a mysql server and do migrations, but at this point, the tables are still empty
 
-you can run the following command to seed to table
+you can run the following command to seed the table
 
 ```bash
 go run cmd/load_csv_to_db/main.go
+
+or
+
+make import-csv
 ```
 
 
@@ -70,4 +74,18 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMTF9._cLJn0xFS0Mdr_4L_8XF8-
 curl http://localhost:8080/api/v1/players/most_runs\?careerEndYear\=2010 -H 'Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMTF9._cLJn0xFS0Mdr_4L_8XF8-8tv7bHyOQJXyWaNsSqlEs'
 
 {"name":"Mohammad Yousuf (Asia/PAK)","runs":9720}
+```
+
+
+## How to test
+
+### create test database for Integration Testing
+
+```bash
+make test_db # it will create a cricket_db_test
+
+# before running test, make sure the DATABASE_URL is pointing to the test_db
+export DATABASE_URL="root:password@/cricket_db_test?parseTime=true"
+
+go test ./...
 ```
