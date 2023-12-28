@@ -9,7 +9,8 @@ ORDER BY runs DESC LIMIT 1;
 
 -- name: GetPlayersByCareerYear :many
 SELECT * FROM players
-WHERE career_start_year <= sqlc.arg(career_year) AND career_end_year >= sqlc.arg(career_year);
+WHERE career_start_year <= sqlc.arg(career_year) AND career_end_year >= sqlc.arg(career_year)
+ORDER By id ASC;
 
 -- name: CreatePlayer :execresult
 INSERT INTO players (
@@ -27,20 +28,7 @@ INSERT INTO players (
     score_hundreds,
     score_fiftys,
     score_zeros
-) VALUES (
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?
-);
+) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
+-- name: DeleteAllPlayers :execresult
+DELETE FROM players;

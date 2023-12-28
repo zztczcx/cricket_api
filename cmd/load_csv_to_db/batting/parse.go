@@ -2,10 +2,8 @@ package batting
 
 import (
 	db "cricket/db/sqlc"
-	"database/sql"
 	"fmt"
 	"log"
-	"strconv"
 	"strings"
 	"sync"
 )
@@ -57,32 +55,21 @@ func parseData(line string) (p player, err error) {
 
 	p = player{
 		Name:            fields[1],
-		CareerStartYear: toNullInt64(yearParts[0]),
-		CareerEndYear:   toNullInt64(yearParts[1]),
-		Matches:         toNullInt64(fields[3]),
-		Inns:            toNullInt64(fields[4]),
-		NotOuts:         toNullInt64(fields[5]),
-		Runs:            toNullInt64(fields[6]),
-		HighestScores:   toNullInt64(fields[7]),
-		Average:         toNullFloat64(fields[8]),
-		FacedBalls:      toNullInt64(fields[9]),
-		StrikeRate:      toNullFloat64(fields[10]),
-		ScoreHundreds:   toNullInt64(fields[11]),
-		ScoreFiftys:     toNullInt64(fields[12]),
-		ScoreZeros:      toNullInt64(fields[13]),
+		CareerStartYear: db.ToNullInt64(yearParts[0]),
+		CareerEndYear:   db.ToNullInt64(yearParts[1]),
+		Matches:         db.ToNullInt64(fields[3]),
+		Inns:            db.ToNullInt64(fields[4]),
+		NotOuts:         db.ToNullInt64(fields[5]),
+		Runs:            db.ToNullInt64(fields[6]),
+		HighestScores:   db.ToNullInt64(fields[7]),
+		Average:         db.ToNullFloat64(sanitize(fields[8])),
+		FacedBalls:      db.ToNullInt64(fields[9]),
+		StrikeRate:      db.ToNullFloat64(sanitize(fields[10])),
+		ScoreHundreds:   db.ToNullInt64(fields[11]),
+		ScoreFiftys:     db.ToNullInt64(fields[12]),
+		ScoreZeros:      db.ToNullInt64(fields[13]),
 	}
 	return
-}
-
-func toNullInt64(s string) sql.NullInt64 {
-	i, err := strconv.Atoi(s)
-	return sql.NullInt64{Int64: int64(i), Valid: err == nil}
-}
-
-func toNullFloat64(s string) sql.NullFloat64 {
-	s = sanitize(s)
-	f, err := strconv.ParseFloat(s, 64)
-	return sql.NullFloat64{Float64: f, Valid: err == nil}
 }
 
 func sanitize(s string) string {

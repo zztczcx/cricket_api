@@ -26,22 +26,7 @@ INSERT INTO players (
     score_hundreds,
     score_fiftys,
     score_zeros
-) VALUES (
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?,
-    ?
-)
+) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `
 
 type CreatePlayerParams struct {
@@ -80,9 +65,18 @@ func (q *Queries) CreatePlayer(ctx context.Context, arg CreatePlayerParams) (sql
 	)
 }
 
+const deleteAllPlayers = `-- name: DeleteAllPlayers :execresult
+DELETE FROM players
+`
+
+func (q *Queries) DeleteAllPlayers(ctx context.Context) (sql.Result, error) {
+	return q.db.ExecContext(ctx, deleteAllPlayers)
+}
+
 const getPlayersByCareerYear = `-- name: GetPlayersByCareerYear :many
 SELECT id, name, career_start_year, career_end_year, matches, inns, not_outs, runs, highest_scores, average, faced_balls, strike_rate, score_hundreds, score_fiftys, score_zeros, created_at, updated_at FROM players
 WHERE career_start_year <= ? AND career_end_year >= ?
+ORDER By id ASC
 `
 
 type GetPlayersByCareerYearParams struct {
