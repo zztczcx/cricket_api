@@ -42,5 +42,22 @@ services:
       context: ./db/
     command: "'mysql://root:password@tcp(cricket.db:3306)/cricket_db' up"
 
+  dev-cli:
+    build:
+      context: .
+      target: Dev
+    image: cricket.dev-cli
+    working_dir: /app
+    volumes:
+      - .:/app
+    depends_on: 
+      - cricket.db
+      - cricket.db.migrations
+    environment:
+      - DATABASE_URL=root:password@tcp(cricket.db:3306)/cricket_db?parseTime=true
+
+    command: sh
+
+
 volumes:
   mysql:
