@@ -1,4 +1,4 @@
-package api
+package players
 
 import (
 	db "cricket/db/sqlc"
@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+        "cricket/api/errors"
 
 	"github.com/go-chi/render"
 )
@@ -31,10 +32,10 @@ func (mr activePlayersResponse) Render(w http.ResponseWriter, r *http.Request) e
 	return nil
 }
 
-func (s *Server) handlePlayersActive(w http.ResponseWriter, r *http.Request) {
+func (h *playersHandler) HandleActive(w http.ResponseWriter, r *http.Request) {
 	givenYear := r.URL.Query().Get("careerYear")
 	if givenYear == "" {
-		err := &ErrResponse{
+		err := &errors.ErrResponse{
 			HTTPStatusCode: 400,
 			StatusText:     "Bad request",
 			ErrorText:      "careerYear is required as query parameter",
@@ -46,7 +47,7 @@ func (s *Server) handlePlayersActive(w http.ResponseWriter, r *http.Request) {
 
 	year, err := strconv.Atoi(givenYear)
 	if err != nil {
-		err := &ErrResponse{
+		err := &errors.ErrResponse{
 			HTTPStatusCode: 400,
 			StatusText:     "Bad request",
 			ErrorText:      "careerYear should be a number",
@@ -59,14 +60,14 @@ func (s *Server) handlePlayersActive(w http.ResponseWriter, r *http.Request) {
 		CareerYear: sql.NullInt64{Int64: int64(year), Valid: true},
 	}
 
-	players, err := s.store.GetPlayersByCareerYear(r.Context(), p)
+	players, err := h.store.GetPlayersByCareerYear(r.Context(), p)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			render.Render(w, r, ErrNotFound)
+			render.Render(w, r, errors.ErrNotFound)
 			return
 		}
 		log.Printf("Error while querying active players: %s\n", err)
-		render.Render(w, r, ErrInternalServerError)
+		render.Render(w, r, errors.ErrInternalServerError)
 		return
 	}
 

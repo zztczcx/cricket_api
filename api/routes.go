@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"strings"
 
+        "cricket/api/players"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/jwtauth/v5"
@@ -23,9 +25,8 @@ func (s *Server) routes() {
 		r.Use(jwtauth.Verifier(tokenAuth))
 		r.Use(jwtauth.Authenticator(tokenAuth))
 
-                r.Route("/api/v1/players", func(r chi.Router) {
-                        r.Get("/most_runs", s.handlePlayersMostRuns)
-                        r.Get("/active", s.handlePlayersActive)
+                r.Route("/api/v1", func(r chi.Router) {
+                        players.NewPlayersHandler(r, s.store)
                 })
         })
         FileServer(s.router, "/docs", http.Dir("./docs/html"))

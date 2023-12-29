@@ -1,4 +1,4 @@
-package api
+package players
 
 import (
 	"database/sql"
@@ -10,35 +10,21 @@ import (
 	mockdb "cricket/db/mock"
 	db "cricket/db/sqlc"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 )
 
-func Test_handlePlayersActive(t *testing.T) {
+func Test_handleActive(t *testing.T) {
 	testCases := []struct {
 		name          string
 		url           string
-		setupAuth     func(request *http.Request)
 		buildStubs    func(store *mockdb.MockStore)
 		checkResponse func(t *testing.T, recorder *httptest.ResponseRecorder)
 	}{
 		{
-			name: "Invalid Auth Token",
-			url:  "/api/v1/players/active",
-			setupAuth: func(request *http.Request) {
-				request.Header.Set("Authorization", "invalid token")
-			},
-			buildStubs: func(store *mockdb.MockStore) {},
-			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
-				require.Equal(t, http.StatusUnauthorized, recorder.Code)
-			},
-		},
-		{
-			name: "valid Token, missing query parameter",
-			url:  "/api/v1/players/active",
-			setupAuth: func(request *http.Request) {
-				request.Header.Set("Authorization", jwtToken)
-			},
+			name:       "missing query parameter",
+			url:        "/players/active",
 			buildStubs: func(store *mockdb.MockStore) {},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusBadRequest, recorder.Code)
@@ -52,11 +38,8 @@ func Test_handlePlayersActive(t *testing.T) {
 			},
 		},
 		{
-			name: "valid Token, invalid query parameter",
-			url:  "/api/v1/players/active?careerYear=202a",
-			setupAuth: func(request *http.Request) {
-				request.Header.Set("Authorization", jwtToken)
-			},
+			name:       "invalid query parameter",
+			url:        "/players/active?careerYear=202a",
 			buildStubs: func(store *mockdb.MockStore) {},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusBadRequest, recorder.Code)
@@ -70,11 +53,8 @@ func Test_handlePlayersActive(t *testing.T) {
 			},
 		},
 		{
-			name: "valid Token, Empty data",
-			url:  "/api/v1/players/active?careerYear=2020",
-			setupAuth: func(request *http.Request) {
-				request.Header.Set("Authorization", jwtToken)
-			},
+			name: "Empty data",
+			url:  "/players/active?careerYear=2020",
 			buildStubs: func(store *mockdb.MockStore) {
 				p := db.GetPlayersByCareerYearParams{
 					CareerYear: sql.NullInt64{Int64: int64(2020), Valid: true},
@@ -94,11 +74,8 @@ func Test_handlePlayersActive(t *testing.T) {
 			},
 		},
 		{
-			name: "valid Token, valid data",
-			url:  "/api/v1/players/active?careerYear=2020",
-			setupAuth: func(request *http.Request) {
-				request.Header.Set("Authorization", jwtToken)
-			},
+			name: "valid data",
+			url:  "/players/active?careerYear=2020",
 			buildStubs: func(store *mockdb.MockStore) {
 				p := db.GetPlayersByCareerYearParams{
 					CareerYear: sql.NullInt64{Int64: int64(2020), Valid: true},
@@ -134,15 +111,15 @@ func Test_handlePlayersActive(t *testing.T) {
 
 			tc.buildStubs(store)
 
-			server := newTestServer(store)
+			router := chi.NewRouter()
+			NewPlayersHandler(router, store)
 			recorder := httptest.NewRecorder()
 
 			request, err := http.NewRequest(http.MethodGet, tc.url, nil)
 
-			tc.setupAuth(request)
 			require.NoError(t, err)
 
-			server.router.ServeHTTP(recorder, request)
+			router.ServeHTTP(recorder, request)
 			tc.checkResponse(t, recorder)
 		})
 	}
