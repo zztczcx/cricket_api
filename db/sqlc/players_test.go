@@ -70,7 +70,7 @@ func Test_GetPlayersByCareerYear(t *testing.T) {
 	require.Empty(t, players)
 }
 
-func Test_GetPlayersOfMostRuns(t *testing.T) {
+func Test_GetPlayerOfMostRuns(t *testing.T) {
 	defer clearTable(t)
 
 	p1 := createRandomPlayer(t)
@@ -80,14 +80,14 @@ func Test_GetPlayersOfMostRuns(t *testing.T) {
 	players := []CreatePlayerParams{p1, p2, p3}
 	sort.SliceStable(players, func(i, j int) bool { return players[i].Runs.Int64 > players[j].Runs.Int64 })
 
-	player, err := testStore.GetPlayersOfMostRuns(context.Background())
+	player, err := testStore.GetPlayerOfMostRuns(context.Background())
 	require.NoError(t, err)
 	require.NotEmpty(t, player)
 
 	require.Equal(t, player.Name, players[0].Name)
 }
 
-func Test_GetPlayersOfMostRunsByCareerEndYear(t *testing.T) {
+func Test_GetPlayerOfMostRunsByCareerEndYear(t *testing.T) {
 	defer clearTable(t)
 
 	testStore.CreatePlayer(context.Background(), CreatePlayerParams{
@@ -107,7 +107,7 @@ func Test_GetPlayersOfMostRunsByCareerEndYear(t *testing.T) {
 		Runs:          ToNullInt64("1111")},
 	)
 
-	player, err := testStore.GetPlayersOfMostRunsByCareerEndYear(context.Background(), ToNullInt64("2011"))
+	player, err := testStore.GetPlayerOfMostRunsByCareerEndYear(context.Background(), ToNullInt64("2011"))
 	require.NoError(t, err)
 	require.NotEmpty(t, player)
 

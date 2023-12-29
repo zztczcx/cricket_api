@@ -9,6 +9,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/stretchr/testify v1.8.4
+	go.uber.org/mock v0.4.0
 )
 
 require (

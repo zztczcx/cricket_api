@@ -12,9 +12,9 @@ import (
 type Querier interface {
 	CreatePlayer(ctx context.Context, arg CreatePlayerParams) (sql.Result, error)
 	DeleteAllPlayers(ctx context.Context) (sql.Result, error)
+	GetPlayerOfMostRuns(ctx context.Context) (Player, error)
+	GetPlayerOfMostRunsByCareerEndYear(ctx context.Context, careerEndYear sql.NullInt64) (Player, error)
 	GetPlayersByCareerYear(ctx context.Context, arg GetPlayersByCareerYearParams) ([]Player, error)
-	GetPlayersOfMostRuns(ctx context.Context) (Player, error)
-	GetPlayersOfMostRunsByCareerEndYear(ctx context.Context, careerEndYear sql.NullInt64) (Player, error)
 }
 
 var _ Querier = (*Queries)(nil)

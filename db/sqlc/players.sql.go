@@ -73,6 +73,67 @@ func (q *Queries) DeleteAllPlayers(ctx context.Context) (sql.Result, error) {
 	return q.db.ExecContext(ctx, deleteAllPlayers)
 }
 
+const getPlayerOfMostRuns = `-- name: GetPlayerOfMostRuns :one
+SELECT id, name, career_start_year, career_end_year, matches, inns, not_outs, runs, highest_scores, average, faced_balls, strike_rate, score_hundreds, score_fiftys, score_zeros, created_at, updated_at FROM players
+ORDER BY runs DESC LIMIT 1
+`
+
+func (q *Queries) GetPlayerOfMostRuns(ctx context.Context) (Player, error) {
+	row := q.db.QueryRowContext(ctx, getPlayerOfMostRuns)
+	var i Player
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CareerStartYear,
+		&i.CareerEndYear,
+		&i.Matches,
+		&i.Inns,
+		&i.NotOuts,
+		&i.Runs,
+		&i.HighestScores,
+		&i.Average,
+		&i.FacedBalls,
+		&i.StrikeRate,
+		&i.ScoreHundreds,
+		&i.ScoreFiftys,
+		&i.ScoreZeros,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const getPlayerOfMostRunsByCareerEndYear = `-- name: GetPlayerOfMostRunsByCareerEndYear :one
+SELECT id, name, career_start_year, career_end_year, matches, inns, not_outs, runs, highest_scores, average, faced_balls, strike_rate, score_hundreds, score_fiftys, score_zeros, created_at, updated_at FROM players
+WHERE career_end_year = ?
+ORDER BY runs DESC LIMIT 1
+`
+
+func (q *Queries) GetPlayerOfMostRunsByCareerEndYear(ctx context.Context, careerEndYear sql.NullInt64) (Player, error) {
+	row := q.db.QueryRowContext(ctx, getPlayerOfMostRunsByCareerEndYear, careerEndYear)
+	var i Player
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CareerStartYear,
+		&i.CareerEndYear,
+		&i.Matches,
+		&i.Inns,
+		&i.NotOuts,
+		&i.Runs,
+		&i.HighestScores,
+		&i.Average,
+		&i.FacedBalls,
+		&i.StrikeRate,
+		&i.ScoreHundreds,
+		&i.ScoreFiftys,
+		&i.ScoreZeros,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const getPlayersByCareerYear = `-- name: GetPlayersByCareerYear :many
 SELECT id, name, career_start_year, career_end_year, matches, inns, not_outs, runs, highest_scores, average, faced_balls, strike_rate, score_hundreds, score_fiftys, score_zeros, created_at, updated_at FROM players
 WHERE career_start_year <= ? AND career_end_year >= ?
@@ -122,65 +183,4 @@ func (q *Queries) GetPlayersByCareerYear(ctx context.Context, arg GetPlayersByCa
 		return nil, err
 	}
 	return items, nil
-}
-
-const getPlayersOfMostRuns = `-- name: GetPlayersOfMostRuns :one
-SELECT id, name, career_start_year, career_end_year, matches, inns, not_outs, runs, highest_scores, average, faced_balls, strike_rate, score_hundreds, score_fiftys, score_zeros, created_at, updated_at FROM players
-ORDER BY runs DESC LIMIT 1
-`
-
-func (q *Queries) GetPlayersOfMostRuns(ctx context.Context) (Player, error) {
-	row := q.db.QueryRowContext(ctx, getPlayersOfMostRuns)
-	var i Player
-	err := row.Scan(
-		&i.ID,
-		&i.Name,
-		&i.CareerStartYear,
-		&i.CareerEndYear,
-		&i.Matches,
-		&i.Inns,
-		&i.NotOuts,
-		&i.Runs,
-		&i.HighestScores,
-		&i.Average,
-		&i.FacedBalls,
-		&i.StrikeRate,
-		&i.ScoreHundreds,
-		&i.ScoreFiftys,
-		&i.ScoreZeros,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
-}
-
-const getPlayersOfMostRunsByCareerEndYear = `-- name: GetPlayersOfMostRunsByCareerEndYear :one
-SELECT id, name, career_start_year, career_end_year, matches, inns, not_outs, runs, highest_scores, average, faced_balls, strike_rate, score_hundreds, score_fiftys, score_zeros, created_at, updated_at FROM players
-WHERE career_end_year = ?
-ORDER BY runs DESC LIMIT 1
-`
-
-func (q *Queries) GetPlayersOfMostRunsByCareerEndYear(ctx context.Context, careerEndYear sql.NullInt64) (Player, error) {
-	row := q.db.QueryRowContext(ctx, getPlayersOfMostRunsByCareerEndYear, careerEndYear)
-	var i Player
-	err := row.Scan(
-		&i.ID,
-		&i.Name,
-		&i.CareerStartYear,
-		&i.CareerEndYear,
-		&i.Matches,
-		&i.Inns,
-		&i.NotOuts,
-		&i.Runs,
-		&i.HighestScores,
-		&i.Average,
-		&i.FacedBalls,
-		&i.StrikeRate,
-		&i.ScoreHundreds,
-		&i.ScoreFiftys,
-		&i.ScoreZeros,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
 }

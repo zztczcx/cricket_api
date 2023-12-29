@@ -1,8 +1,8 @@
--- name: GetPlayersOfMostRuns :one
+-- name: GetPlayerOfMostRuns :one
 SELECT * FROM players
 ORDER BY runs DESC LIMIT 1;
 
--- name: GetPlayersOfMostRunsByCareerEndYear :one
+-- name: GetPlayerOfMostRunsByCareerEndYear :one
 SELECT * FROM players
 WHERE career_end_year = ?
 ORDER BY runs DESC LIMIT 1;

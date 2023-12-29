@@ -33,9 +33,9 @@ func (s *Server) handlePlayersMostRuns(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	if givenYear != "" {
-		player, err = s.store.GetPlayersOfMostRunsByCareerEndYear(r.Context(), db.ToNullInt64(givenYear))
+		player, err = s.store.GetPlayerOfMostRunsByCareerEndYear(r.Context(), db.ToNullInt64(givenYear))
 	} else {
-		player, err = s.store.GetPlayersOfMostRuns(r.Context())
+		player, err = s.store.GetPlayerOfMostRuns(r.Context())
 	}
 
 	if err != nil {
