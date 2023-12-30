@@ -7,6 +7,7 @@ require (
 	github.com/go-chi/jwtauth/v5 v5.3.0
 	github.com/go-chi/render v1.0.3
 	github.com/go-sql-driver/mysql v1.7.1
+	github.com/guregu/null v4.0.0+incompatible
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/stretchr/testify v1.8.4
 	go.uber.org/mock v0.4.0

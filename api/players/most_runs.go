@@ -1,24 +1,25 @@
 package players
 
 import (
+	"cricket/api/errors"
 	db "cricket/db/sqlc"
 	"database/sql"
 	"log"
 	"net/http"
-        "cricket/api/errors"
 
 	"github.com/go-chi/render"
+        "github.com/guregu/null"
 )
 
 type mostRunResponse struct {
 	Name string `json:"name"`
-	Runs int64  `json:"runs"`
+	Runs null.Int  `json:"runs"`
 }
 
 func newMostRunResponse(p db.Player) mostRunResponse {
 	return mostRunResponse{
 		Name: p.Name,
-		Runs: p.Runs.Int64,
+                Runs: null.Int{NullInt64: p.Runs},
 	}
 }
 

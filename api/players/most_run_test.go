@@ -35,9 +35,8 @@ func Test_HandleMostRuns(t *testing.T) {
 				data, err := io.ReadAll(recorder.Body)
 				require.NoError(t, err)
 
-				// TODO: handle nil
 				require.Equal(t,
-					"{\"name\":\"\",\"runs\":0}\n",
+					"{\"name\":\"\",\"runs\":null}\n",
 					string(data),
 				)
 			},
@@ -58,7 +57,7 @@ func Test_HandleMostRuns(t *testing.T) {
 				require.NoError(t, err)
 
 				require.Equal(t,
-					"{\"name\":\"\",\"runs\":0}\n",
+					"{\"name\":\"\",\"runs\":null}\n",
 					string(data),
 				)
 			},
@@ -80,7 +79,7 @@ func Test_HandleMostRuns(t *testing.T) {
 				require.NoError(t, err)
 
 				require.Equal(t,
-					"{\"name\":\"\",\"runs\":0}\n",
+					"{\"name\":\"\",\"runs\":null}\n",
 					string(data),
                                 )
 			},
