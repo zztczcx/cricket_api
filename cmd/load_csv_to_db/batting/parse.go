@@ -61,7 +61,7 @@ func parseData(line string) (p player, err error) {
 		Inns:            db.ToNullInt64(fields[4]),
 		NotOuts:         db.ToNullInt64(fields[5]),
 		Runs:            db.ToNullInt64(fields[6]),
-		HighestScores:   db.ToNullInt64(fields[7]),
+		HighestScores:   db.ToNullInt64(sanitize(fields[7])),
 		Average:         db.ToNullFloat64(sanitize(fields[8])),
 		FacedBalls:      db.ToNullInt64(fields[9]),
 		StrikeRate:      db.ToNullFloat64(sanitize(fields[10])),
