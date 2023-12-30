@@ -50,6 +50,12 @@ or
 
 access `http://localhost:8080/docs/`
 
+### generate docs
+
+```bash
+make docs
+```
+
 ## API Authentication
 
 using 'Authorization: BEARER T' request header, Token can generate by using the following tool.

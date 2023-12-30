@@ -43,6 +43,9 @@ services:
     command: "'mysql://root:password@tcp(cricket.db:3306)/cricket_db' up"
 
   dev-cli:
+    profiles:
+      - dev-cli
+
     build:
       context: .
       target: Dev

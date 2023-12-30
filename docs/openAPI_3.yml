@@ -13,6 +13,8 @@ paths:
     get:
       summary: Get active players by Career year
       description: Returns a list of player names by Career year
+      security:
+        - bearerAuth: []
       parameters:
         - name: careerYear
           in: query
@@ -27,9 +29,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ActivePlayers'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/v1/players/most_runs:
+    get:
+      summary: Get player who has the most_runs
+      description: Returns a player name and his most_runs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: careerEndYear
+          in: query
+          schema:
+            type: integer
+          required: false
+          description: year that the player ends his career
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MostRuns'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
 
 components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+
   schemas:
     ActivePlayers:
       type: object
@@ -40,3 +75,12 @@ components:
           type: array
           items:
             type: string
+    MostRuns:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        runs:
+          type: integer

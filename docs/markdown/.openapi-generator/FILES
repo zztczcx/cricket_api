@@ -1,4 +1,4 @@
-.openapi-generator-ignore
 Apis/DefaultApi.md
 Models/ActivePlayers.md
+Models/MostRuns.md
 README.md
