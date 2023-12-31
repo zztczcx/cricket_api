@@ -1,6 +1,7 @@
 package players
 
 import (
+	"database/sql"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -64,36 +65,36 @@ func Test_HandleMostRuns(t *testing.T) {
 		},
 		{
 			name: "Empty data",
-			url: "/players/most_runs?careerEndYear=2020",
+			url:  "/players/most_runs?careerEndYear=2020",
 			buildStubs: func(store *mockdb.MockStore) {
 				p := db.ToNullInt64("2020")
 				store.EXPECT().
 					GetPlayerOfMostRunsByCareerEndYear(gomock.Any(), gomock.Eq(p)).
 					Times(1).
-					Return(db.Player{}, nil)
+					Return(db.Player{}, sql.ErrNoRows)
 
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
-				require.Equal(t, http.StatusOK, recorder.Code)
+				require.Equal(t, http.StatusNotFound, recorder.Code)
 				data, err := io.ReadAll(recorder.Body)
 				require.NoError(t, err)
 
 				require.Equal(t,
-					"{\"name\":\"\",\"runs\":null}\n",
+					"{\"status\":\"Resource not found.\"}\n",
 					string(data),
-                                )
+				)
 			},
 		},
 		{
 			name: "valid data",
-			url: "/players/most_runs?careerEndYear=2020",
+			url:  "/players/most_runs?careerEndYear=2020",
 			buildStubs: func(store *mockdb.MockStore) {
 				p := db.ToNullInt64("2020")
-		                              store.EXPECT().
+				store.EXPECT().
 					GetPlayerOfMostRunsByCareerEndYear(gomock.Any(), gomock.Eq(p)).
 					Times(1).
 					Return(db.Player{
-                                                Name: "a", Runs: db.ToNullInt64("1000"),
+						Name: "a", Runs: db.ToNullInt64("1000"),
 					}, nil)
 
 			},
