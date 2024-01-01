@@ -83,7 +83,20 @@ curl http://localhost:8080/api/v1/players/most_runs\?careerEndYear\=2010 -H 'Aut
 ```
 
 
-## How to test
+## Running tests
+
+First of all you must fun services
+
+    docker compose up
+
+Then you can import data by using make:
+
+    make import-csv
+
+### acceptance tests
+
+It is made by making requests to api service, which is using the dev database.
+
 
 ### create test database for Integration Testing
 
@@ -92,6 +105,7 @@ make test_db # it will create a cricket_db_test
 
 # before running test, make sure the DATABASE_URL is pointing to the test_db
 export DATABASE_URL="root:password@/cricket_db_test?parseTime=true"
+
 
 go test ./...
 ```
