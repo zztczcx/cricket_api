@@ -11,20 +11,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-
-// Warning: 
-// when running the testing over 5000 times parallelly, it will fail. 
-// it is because the default transaction's isolation doesn't prevent dirty read
-
 func Test_CreatePlayer(t *testing.T) {
-	t.Parallel()
 	s := TxStore(t)
 
 	createRandomPlayer(t, s)
 }
 
 func Test_GetPlayersByCareerYear(t *testing.T) {
-	t.Parallel()
 	s := TxStore(t)
 
 	p1 := createRandomPlayer(t, s)
@@ -51,7 +44,6 @@ func Test_GetPlayersByCareerYear(t *testing.T) {
 }
 
 func Test_GetPlayerOfMostRuns(t *testing.T) {
-	t.Parallel()
 	s := TxStore(t)
 
 	p1 := createRandomPlayer(t, s)
@@ -69,7 +61,6 @@ func Test_GetPlayerOfMostRuns(t *testing.T) {
 }
 
 func Test_GetPlayerOfMostRunsByCareerEndYear(t *testing.T) {
-	t.Parallel()
 	s := TxStore(t)
 
 	s.CreatePlayer(context.Background(), CreatePlayerParams{
