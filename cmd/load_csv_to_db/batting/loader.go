@@ -34,8 +34,13 @@ func NewLoader(i *string) Loader {
 func (l *loader) Load() error {
 	dataSource := l.produce()
 	done := make(chan struct{})
-	l.startParser(dataSource, done)
+	errors := make(chan error)
+	l.startParser(dataSource, done, errors)
 
-	<-done
-	return nil
+        select {
+        case <-done:
+                return nil
+        case err := <-errors:
+                return err
+        }
 }

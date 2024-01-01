@@ -3,7 +3,6 @@ package batting
 import (
 	db "cricket/db/sqlc"
 	"fmt"
-	"log"
 	"strings"
 	"sync"
 )
@@ -14,14 +13,14 @@ const (
 
 type player db.CreatePlayerParams
 
-func (l *loader) startParser(dataSource <-chan string, done chan<- struct{}) {
+func (l *loader) startParser(dataSource <-chan string, done chan<- struct{}, errors chan<- error) {
 	var wg sync.WaitGroup
 	wg.Add(parserCount)
 
 	for i := 0; i < parserCount; i++ {
 		playerChan := make(chan player)
-		go parse(dataSource, playerChan)
-		go l.Insert(playerChan, &wg)
+		go parse(dataSource, playerChan, errors)
+		go l.Insert(playerChan, &wg, errors)
 	}
 
 	go func() {
@@ -30,11 +29,11 @@ func (l *loader) startParser(dataSource <-chan string, done chan<- struct{}) {
 	}()
 }
 
-func parse(dataSource <-chan string, playerChan chan<- player) {
+func parse(dataSource <-chan string, playerChan chan<- player, errors chan<- error) {
 	for d := range dataSource {
 		player, err := parseData(d)
 		if err != nil {
-			log.Println(err)
+                        errors <- err
 		} else {
 			playerChan <- player
 		}

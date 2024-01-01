@@ -85,7 +85,7 @@ curl http://localhost:8080/api/v1/players/most_runs\?careerEndYear\=2010 -H 'Aut
 
 ## Running tests
 
-First of all you must fun services
+First of all you must run services
 
     docker compose up
 
@@ -109,3 +109,8 @@ export DATABASE_URL="root:password@/cricket_db_test?parseTime=true"
 
 go test ./...
 ```
+
+
+## scripts  (not very necessary)
+
+./scripts/load_csv_data_to_mysql.sh
