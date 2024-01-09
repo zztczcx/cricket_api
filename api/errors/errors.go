@@ -25,12 +25,3 @@ var (
 	ErrBadRequest          = &ErrResponse{HTTPStatusCode: 400, StatusText: "Bad request"}
 	ErrInternalServerError = &ErrResponse{HTTPStatusCode: 500, StatusText: "Internal Server Error"}
 )
-
-func ErrConflict(err error) render.Renderer {
-	return &ErrResponse{
-		Err:            err,
-		HTTPStatusCode: 409,
-		StatusText:     "Duplicate Key",
-		ErrorText:      err.Error(),
-	}
-}
